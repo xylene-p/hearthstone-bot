@@ -229,7 +229,6 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 
 def play_full_game() -> ".game.Game":
 	game = setup_game()
-	select = select()
 
 	for player in game.players:
 		print("Can mulligan %r" % (player.choice.cards))
