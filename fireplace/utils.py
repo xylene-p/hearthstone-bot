@@ -252,19 +252,18 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 				print("PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
 				training_list = []
 				for item in pair[0:2]:
-					training_list.append(item.atk/10)
-					training_list.append(item.health/10)
-
+					training_list.append(int(item.atk))
+					training_list.append(int(item.health))
+				training_list = np.array(training_list)/10
+				training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
 				newOutput = nn.think(array([pair[0].atk, pair[0].health, pair[1].atk, pair[1].health]))
-
 				nn.learnFromPrevGame(training_list, newOutput)
 				print(newOutput)
-				# nn.learnFromPrevGame(pair[0].atk, pair[0].health, pair[1].atk, pair[1].health, newOutput)
+
+				#Player 1 actions
 				game_state.update(game)
 				if character.can_attack():
-					character.attack(pair[1])
 					print (character.targets)
-					# print("\n\n\n\n\n\n")
 					if character.can_attack():
 						if newOutput < 0.5:
 							print(newOutput)
@@ -302,7 +301,6 @@ def play_full_game() -> ".game.Game":
 
 	while True:
 		game_state.update(game)
-		# pairSelector.GetOptimalDecisionPair(game)
 		play_turn(game, game_state, nn)
 
 	return game
