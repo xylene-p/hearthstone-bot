@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="99e3257e-6957-4715-a22d-00c88352dd38" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fireplace/pairSelector.py" afterPath="$PROJECT_DIR$/fireplace/pairSelector.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fireplace/utils.py" afterPath="$PROJECT_DIR$/fireplace/utils.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,11 +15,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="pairSelector.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pairSelector.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fireplace/pairSelector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="27" column="19" lean-forward="false" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
+            <state relative-caret-position="278">
+              <caret line="67" column="18" lean-forward="false" selection-start-line="67" selection-start-column="18" selection-end-line="67" selection-end-column="18" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -59,11 +59,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="utils.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fireplace/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="279" column="24" lean-forward="true" selection-start-line="279" selection-start-column="24" selection-end-line="279" selection-end-column="24" />
+            <state relative-caret-position="293">
+              <caret line="262" column="49" lean-forward="true" selection-start-line="262" selection-start-column="49" selection-end-line="262" selection-end-column="49" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -95,8 +95,8 @@
       <list>
         <option value="$PROJECT_DIR$/fireplace/AllyToEnemyWeight.py" />
         <option value="$PROJECT_DIR$/fireplace/card.py" />
-        <option value="$PROJECT_DIR$/fireplace/pairSelector.py" />
         <option value="$PROJECT_DIR$/fireplace/utils.py" />
+        <option value="$PROJECT_DIR$/fireplace/pairSelector.py" />
       </list>
     </option>
   </component>
@@ -327,20 +327,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fireplace/pairSelector.py">
+    <entry file="file://$PROJECT_DIR$/fireplace/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="27" column="19" lean-forward="false" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
+        <state relative-caret-position="293">
+          <caret line="262" column="49" lean-forward="true" selection-start-line="262" selection-start-column="49" selection-end-line="262" selection-end-column="49" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fireplace/utils.py">
+    <entry file="file://$PROJECT_DIR$/fireplace/pairSelector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="279" column="24" lean-forward="true" selection-start-line="279" selection-start-column="24" selection-end-line="279" selection-end-column="24" />
+        <state relative-caret-position="278">
+          <caret line="67" column="18" lean-forward="false" selection-start-line="67" selection-start-column="18" selection-end-line="67" selection-end-column="18" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
