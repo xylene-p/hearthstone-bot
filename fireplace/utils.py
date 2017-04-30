@@ -16,6 +16,8 @@ from typing import List
 from xml.etree import ElementTree
 from hearthstone.enums import CardClass, CardType
 
+import numpy as np
+
 
 # Autogenerate the list of cardset modules
 _cards_module = os.path.join(os.path.dirname(__file__), "cards")
@@ -211,7 +213,7 @@ def setup_game() -> ".game.Game":
 	return game
 
 
-def play_turn(game: ".game.Game") -> ".game.Game":
+def play_turn(game: ".game.Game", game_state) -> ".game.Game":
 	player = game.current_player
 
 	nn = NeuralNetwork()
@@ -250,11 +252,13 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 			if 'Jaina' in compStr:
 				pair = pairSelector.GetOptimalDecisionPair(game)
 				print("PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
+				training_list = []
+				for item in pair[0:2]:
+					training_list.append(item.atk)
+					training_list.append(item.health)
+				np.append(nn.training_set_inputs, training_list)
 				#Player 1 actions
-				for target in character.targets:
-					target_attr = dir(target)
-					# print (target_attr)
-					print("Target: {}\tTarget Health: {}\t Target Attack: {}".format(target, target.health, target.atk))
+				game_state.update(game)
 				if character.can_attack():
 					character.attack(random.choice(character.targets))
 					print (character.targets)
@@ -279,7 +283,6 @@ def play_full_game() -> ".game.Game":
 	game = setup_game()
 	game_state = GameState(game)
 
-	nn = NeuralNetwork()
 	for player in game.players:
 		print("Can mulligan %r" % (player.choice.cards))
 		mull_count = random.randint(0, len(player.choice.cards))
@@ -288,7 +291,7 @@ def play_full_game() -> ".game.Game":
 
 	while True:
 		game_state.update(game)
-		pairSelector.GetOptimalDecisionPair(game)
-		play_turn(game)
+		# pairSelector.GetOptimalDecisionPair(game)
+		play_turn(game, game_state)
 
 	return game

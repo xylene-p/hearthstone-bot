@@ -2,12 +2,8 @@ class GameState:
 
     def __init__(self, game):
         self.game = game
-        if (game.player1.name == 'Player2'):
-            self.ally = game.player2
-            self.enemy = game.player1
-        else:
-            self.ally = game.player1
-            self.enemy = game.player2
+        self.ally = game.player1
+        self.enemy = game.player2
         self.enemy_targets = []
         self.ally_characters = []
         self.enemy_hero_health = 30
@@ -24,6 +20,7 @@ class GameState:
         self.enemy_hero_health = self.enemy.hero.health
         self.ally_hero_health = self.ally.hero.health
         self.update_total_attack_health()
+        print("");
         print("TARGETS: {}".format(self.enemy_targets))
         print("ALLIES: {}".format(self.ally_characters))
         print("ENEMY HERO HEALTH: {}".format(self.enemy_hero_health))
@@ -32,6 +29,7 @@ class GameState:
         print("TOTAL ALLY HEALTH: {}".format(self.ally_total_health))
         print("TOTAL ENEMY ATTACK: {}".format(self.enemy_total_attack))
         print("TOTAL ENEMY HEALTH: {}".format(self.enemy_total_health))
+        print("");
 
     def update_total_attack_health(self):
         # Update ally total attack and health
