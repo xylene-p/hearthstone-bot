@@ -274,6 +274,8 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 				if character.can_attack():
 					character.attack(random.choice(character.targets))
 
+
+
 		break
 
 	game.end_turn()
