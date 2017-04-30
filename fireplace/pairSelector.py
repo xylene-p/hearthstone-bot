@@ -12,7 +12,7 @@ class pairSelector:
 	def __init__(self):
 		pass
 
-def PrintPlayerCharacters(game: ".game.Game") -> ".game.Game":
+def GetOptimalDecisionPair(game: ".game.Game") -> ".game.Game":
 	allys = game.player1.characters
 
 	print("\n\n\n\n")
@@ -37,7 +37,12 @@ def PrintPlayerCharacters(game: ".game.Game") -> ".game.Game":
 
 	#print(pairs)
 
-	decisionPair = GetOptimalDecisionPair(pairs)
+	#	Return a tuple that contains the pair with the highest decision weight
+	decisionPair = pairs[0]
+
+	for pair in pairs:
+		if pair[2] >= decisionPair[2]:
+			decisionPair = pair
 
 	print("{} with {} ATK and {} HP to attack {} with {} ATK and {} HP is a optimal choice given current events.".format(decisionPair[0], decisionPair[0].atk, decisionPair[0].health, decisionPair[1], decisionPair[1].atk, decisionPair[1].health))
 	if decisionPair[2] <= 0:
@@ -46,6 +51,8 @@ def PrintPlayerCharacters(game: ".game.Game") -> ".game.Game":
 		print("Action has a weight of {}".format(decisionPair[2]))
 
 	print("\n\n\n\n")
+
+	return decisionPair
 
 #	Calculates the decision weight (int) between the given ally and the enemy
 def GetDecisionWeight(ally, enemy):
@@ -78,14 +85,3 @@ def GetDecisionWeight(ally, enemy):
 	#	weight += ally.health - enemy.atk
 
 	return weight
-
-#	Return a tuple that contains the pair with the highest decision weight
-def GetOptimalDecisionPair(pairs):
-
-	highestPair = pairs[0]
-
-	for pair in pairs:
-		if pair[2] >= highestPair[2]:
-			highestPair = pair
-
-	return highestPair

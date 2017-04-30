@@ -286,7 +286,7 @@ def play_full_game() -> ".game.Game":
 
 	while True:
 		game_state.update(game)
-		pairSelector.PrintPlayerCharacters(game)
+		pairSelector.GetOptimalDecisionPair(game)
 		play_turn(game)
 
 	return game
