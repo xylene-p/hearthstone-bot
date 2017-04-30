@@ -1,5 +1,6 @@
 import random
 import os.path
+from . import pairSelector
 from bisect import bisect
 from importlib import import_module
 from pkgutil import iter_modules
@@ -183,7 +184,7 @@ def setup_game() -> ".game.Game":
 def play_turn(game: ".game.Game") -> ".game.Game":
 	player = game.current_player
 
-	print(dir(player))
+	#print(dir(player))
 
 	while True:
 		heropower = player.hero.power
@@ -229,7 +230,6 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 
 def play_full_game() -> ".game.Game":
 	game = setup_game()
-	select = select()
 
 	for player in game.players:
 		print("Can mulligan %r" % (player.choice.cards))
@@ -239,5 +239,6 @@ def play_full_game() -> ".game.Game":
 
 	while True:
 		play_turn(game)
+		pairSelector.PrintPlayerCharacters(game)
 
 	return game
