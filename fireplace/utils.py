@@ -218,7 +218,13 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 	player = game.current_player
 
 	while True:
-		#TODO: Lethal check goes here
+		# Perform lethal
+		if player.name is 'Player':
+			if (game_state.ally_total_attack >= game_state.enemy_hero_health):
+				print("\n=====LETHAL ATTACK NAOOOOOOO=====\n")
+				for character in player.characters:
+					if character.can_attack():
+						character.attack(character.targets[0])
 
 		heropower = player.hero.power
 		if heropower.is_usable() and random.random() < 0.1:
@@ -246,51 +252,53 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 
 				continue
 
-		# Randomly attack with whatever can attack
-
+		# =========== PLAYER ATTACK PHASE ===========
 		if player.name is 'Player':
 			ally_hero = player.characters[0]
-		elif player.name is 'Opponent':
-			opponent_hero = player.characters[0]
-
-		for character in player.characters:
-			compStr = str(character)
-			if 'Jaina' in compStr:
+			if (player.characters):
+				# Get optimal attacking pair
 				pair = pairSelector.GetOptimalDecisionPair(game)
-				print("PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
-				if pair[0] is 0:
-					training_list = [0, 0, 0, 0]
-				else:
-					training_list = []
-					for item in pair[0:2]:
-						training_list.append(float(item.atk))
-						training_list.append(float(item.health))
-					print(training_list)
-					double_hero_check = training_list.count(0)
-					print(double_hero_check)
-					print(nn.training_set_inputs)
-					if double_hero_check != 2:
-						training_list = np.array(training_list)/10
-					else:
-						training_list = [0, 0, 0, 0]
-				training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
-				print(nn.training_set_inputs)
-				newOutput = nn.think(array([pair[0].atk, pair[0].health, pair[1].atk, pair[1].health]))
-				#nn.learnFromPrevGame(training_set_inputs, newOutput)
-				print("Neural network ouptut: {}".format(newOutput))
-
-				#Player 1 actions
-				game_state.update(game)
+				print("-----> PAIR CHECK: PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
 				attacking_minion = pair[0]
 				attacking_minion_target = pair[1]
 
-			elif 'Garrosh' in compStr:
+				# Calculate neural network output
+				training_list = []
+				for item in pair[0:2]:
+					training_list.append(float(item.atk)/10)
+					training_list.append(float(item.health)/10)
+				print(nn.training_set_inputs)
+				nn.training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
+				hidden_state, newOutput = nn.think(array([pair[0].atk, pair[0].health, pair[1].atk, pair[1].health]))
+				print("Neural network output: {}".format(newOutput))
+				game_state.update(game)
+
+				# Attack Actions
+				if (newOutput < 0.45):
+					for character in player.characters:
+						if character is attacking_minion:
+							for target in character.targets:
+								if target is attacking_minion_target:
+									if character.can_attack():
+										print("\033[31mJAINA DOES STUFF HERE MAYBE\033[0m")
+										character.attack(target)
+				else:
+					for character in player.characters:
+						if character is attacking_minion:
+							if character.can_attack():
+								character.attack(character.targets[0])
+			else:
+				print("No more players can attack")
+
+
+		# =========== OPPONENT ATTACK PHASE ===========
+		elif player.name is 'Opponent':
+			opponent_hero = player.characters[0]
+			for character in player.characters:
 				for target in character.targets:
 					print("Target: {}\tTarget Health: {}\t Target Attack: {}".format(target, target.health, target.atk))
 				if character.can_attack():
 					character.attack(random.choice(character.targets))
-
-
 
 		break
 

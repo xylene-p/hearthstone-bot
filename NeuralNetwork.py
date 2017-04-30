@@ -8,7 +8,7 @@ class NeuralNetwork():
 
     # based on inputs if ally attack is high attack the face
     # Ally Attack, Ally Health, Enemy Attack, Enemy Health
-    training_set_inputs = array([[0.1, 0.1, 0.1, 0.1], [0.1, 0.1, 0.1, 0.3], [0.1, 0.1, 0.1, 0.5], [0.1, 0.1, 0.1, 0.7],
+        self.training_set_inputs = array([[0.1, 0.1, 0.1, 0.1], [0.1, 0.1, 0.1, 0.3], [0.1, 0.1, 0.1, 0.5], [0.1, 0.1, 0.1, 0.7],
                                  [0.3, 0.1, 0.1, 0.1], [0.3, 0.1, 0.1, 0.2], [0.3, 0.1, 0.1, 0.4], [0.3, 0.1, 0.1, 0.6],
                                  [0.5, 0.1, 0.1, 0.1], [0.5, 0.1, 0.1, 0.3], [0.5, 0.1, 0.1, 0.5], [0.5, 0.1, 0.1, 0.7],
                                  [0.8, 0.1, 0.1, 0.1], [0.8, 0.1, 0.1, 0.2], [0.8, 0.1, 0.1, 0.4], [0.8, 0.1, 0.1, 0.6],
@@ -31,7 +31,7 @@ class NeuralNetwork():
 
     # if output == 0 # do not go for face
     # if output == 1 # attack the face
-    training_set_outputs = array([[0, 1, 1, 1,
+        self.training_set_outputs = array([[0, 1, 1, 1,
                                    1, 1, 1, 1,
                                    1, 1, 1, 1,
                                    1, 1, 1, 1,
