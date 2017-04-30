@@ -52,5 +52,6 @@ def main():
 	print ("Considering [1.0, 0.1, 0.5, 0.5]", neural_network.think(array([1.0, 0.5, 0.5, 0.5])))
 	print ("Considering [0.5, 0.3, 0.3, 0.5]", neural_network.think(array([0.5, 0.3, 0.3, 0.5])))
 
+
 if __name__ == "__main__":
 	main()
