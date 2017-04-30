@@ -37,10 +37,13 @@ def PrintPlayerCharacters(game: ".game.Game") -> ".game.Game":
 
 	#print(pairs)
 
-	decisionPair = GetDecisionPair(pairs)
+	decisionPair = GetOptimalDecisionPair(pairs)
 
-	print("{} with {} ATK and {} HP vs {} with {} ATK and {} HP is the best choice.".format(decisionPair[0], decisionPair[0].atk, decisionPair[0].health, decisionPair[1], decisionPair[1].atk, decisionPair[1].health))
-	print("weight of {}".format(decisionPair[2]))
+	print("{} with {} ATK and {} HP to attack {} with {} ATK and {} HP is a optimal choice given current events.".format(decisionPair[0], decisionPair[0].atk, decisionPair[0].health, decisionPair[1], decisionPair[1].atk, decisionPair[1].health))
+	if decisionPair[2] <= 0:
+		print("Action has a weight of {}, better to not attack.".format(decisionPair[2]))
+	else:
+		print("Action has a weight of {}".format(decisionPair[2]))
 
 	print("\n\n\n\n")
 
@@ -49,23 +52,40 @@ def GetDecisionWeight(ally, enemy):
 	#print(dir(ally))
 	weight = 0
 
-	#	if ally can perform lethal attack on enemy hero...  attack hero
-	#if ally.atk >= enemy.:
-	#	weight += 9999
+	#print("ally {} has {} ATK and {} HP".format(ally, ally.atk, ally.health))
+	#print("enemy {} has {} ATK and {} HP".format(enemy, enemy.atk, enemy.health))
+
+	if int(enemy.atk) <= 0 and int(ally.atk) > 0:
+		weight += 9000
+
+	elif int(enemy.atk) >= 0 and int(ally.atk) <= 0:
+		weight += -9000
+
 	if ally.atk >= enemy.health:
-		weight += 1
-		if enemy.atk >= ally.health:
-			weight += enemy.atk
+		weight += ally.atk - enemy.health
+
+	#if enemy.atk >= ally.health:
+	#	weight += -(enemy.atk + ally.health)
+
+	#if ally.atk >= enemy.health:
+	#	weight += (ally.atk - enemy.health) - (ally.health - enemy.atk)
+
+	#if ally.atk
+	#weight += ally.atk - enemy.health
+	#if ally.health > enemy.health:
+	#weight += -enemy.atk
+	#if ally.health >= enemy.atk:
+	#	weight += ally.health - enemy.atk
 
 	return weight
 
 #	Return a tuple that contains the pair with the highest decision weight
-def GetDecisionPair(pairs):
+def GetOptimalDecisionPair(pairs):
 
 	highestPair = pairs[0]
 
 	for pair in pairs:
-		if pair[2] > highestPair[2]:
+		if pair[2] >= highestPair[2]:
 			highestPair = pair
 
 	return highestPair
