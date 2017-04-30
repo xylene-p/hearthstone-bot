@@ -216,8 +216,6 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 
 	nn = NeuralNetwork()
 
-	# ally =
-
 	while True:
 		heropower = player.hero.power
 		if heropower.is_usable() and random.random() < 0.1:
@@ -251,8 +249,6 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 			compStr = str(character)
 			if 'Jaina' in compStr:
 				#Player 1 actions
-				print(compStr)
-				print("\n\n\n\n")
 				for target in character.targets:
 					target_attr = dir(target)
 					# print (target_attr)
@@ -264,8 +260,6 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 					# newOutput = nn.think(ally.atk, ally.health, target.atk, target.health)
 			elif 'Garrosh' in compStr:
 				#Player 2 actions
-				print(compStr)
-				print("\n\n\n\n")
 				for target in character.targets:
 					target_attr = dir(target)
 					# print (target_attr)
@@ -292,6 +286,7 @@ def play_full_game() -> ".game.Game":
 
 	while True:
 		game_state.update(game)
+		pairSelector.PrintPlayerCharacters(game)
 		play_turn(game)
 
 	return game
