@@ -213,10 +213,8 @@ def setup_game() -> ".game.Game":
 	return game
 
 
-def play_turn(game: ".game.Game", game_state) -> ".game.Game":
+def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 	player = game.current_player
-
-	nn = NeuralNetwork()
 
 	while True:
 		heropower = player.hero.power
@@ -253,13 +251,13 @@ def play_turn(game: ".game.Game", game_state) -> ".game.Game":
 				pair = pairSelector.GetOptimalDecisionPair(game)
 				print("PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
 				training_list = []
+				training_set_inputs = nn.training_set_inputs
 				for item in pair[0:2]:
 					training_list.append(int(item.atk))
 					training_list.append(int(item.health))
 				training_list = np.array(training_list)/10
-				print(nn.training_set_inputs)
-				nn.training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
-				print(nn.training_set_inputs)
+				training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
+				nn.set_training_set_inputs(training_set_inputs)
 				#Player 1 actions
 				game_state.update(game)
 				if character.can_attack():
@@ -279,12 +277,14 @@ def play_turn(game: ".game.Game", game_state) -> ".game.Game":
 		break
 
 	game.end_turn()
-	return game
+	return game, nn
 
 
 def play_full_game() -> ".game.Game":
 	game = setup_game()
 	game_state = GameState(game)
+
+	nn = NeuralNetwork()
 
 	for player in game.players:
 		print("Can mulligan %r" % (player.choice.cards))
@@ -295,6 +295,6 @@ def play_full_game() -> ".game.Game":
 	while True:
 		game_state.update(game)
 		# pairSelector.GetOptimalDecisionPair(game)
-		play_turn(game, game_state)
+		play_turn(game, game_state, nn)
 
 	return game

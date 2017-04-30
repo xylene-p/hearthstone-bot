@@ -81,6 +81,9 @@ class NeuralNetwork():
         # Pass inputs through our neural network (our single neuron).
         return self.__sigmoid(dot(inputs, self.synaptic_weights))
 
+    def set_training_set_inputs(self, inputs):
+        self.training_set_inputs = inputs
+
     # def converter(self, stats):
     #
 
