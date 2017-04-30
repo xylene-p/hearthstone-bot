@@ -41,7 +41,7 @@ def GetOptimalDecisionPair(game: ".game.Game") -> ".game.Game":
 		#	Remove the first index because it is a hero
 		enemies.pop(0)
 
-		#	for each enemy the ally can enemy...
+		#	for each enemy the ally can target...
 		for enemy in enemies:
 			#	Calculate a weight for decision making between ally ally and it's enemy
 			decisionWeight = GetDecisionWeight(ally, enemy)
@@ -52,9 +52,11 @@ def GetOptimalDecisionPair(game: ".game.Game") -> ".game.Game":
 			pairs.append(AllyToEnemyWeight)
 			#print("\t\t{}".format(enemy))
 
+	#	Sorts the list by weight
+	pairs.sort(key=lambda tup: tup[2])
+
 	for pair in pairs:
-		#if pair != None:
-			print("\033[1m[SOLUTION]\033[21m [WEIGHT: \033[32m{}\033[0m]\t{} with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m ATTACKS {} with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m.".format(pair[2], pair[0], pair[0].atk, pair[0].health, pair[1], pair[1].atk, pair[1].health))
+		print("\033[1m[OPTION]\033[21m [WEIGHT: \033[32m{}\033[0m]\t\033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m ATTACKS \033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m.".format(pair[2], pair[0], pair[0].atk, pair[0].health, pair[1], pair[1].atk, pair[1].health))
 
 	if len(pairs) <= 0:
 		tempTup = (game.player1.characters[0], game.player1.characters[0].targets[0], 0)
@@ -66,11 +68,11 @@ def GetOptimalDecisionPair(game: ".game.Game") -> ".game.Game":
 		if pair[2] >= decisionPair[2]:
 			decisionPair = pair
 
-	print("[OPTIMAL SOLUTION] {} with {} ATK and {} HP to attack {} with {} ATK and {} HP.".format(decisionPair[0], decisionPair[0].atk, decisionPair[0].health, decisionPair[1], decisionPair[1].atk, decisionPair[1].health))
+	print("[OPTIMAL SOLUTION]\t\033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m to attack \033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m.".format(decisionPair[0], decisionPair[0].atk, decisionPair[0].health, decisionPair[1], decisionPair[1].atk, decisionPair[1].health))
 	if decisionPair[2] <= 0:
-		print("Action has a weight of {}, better to NOT attack.".format(decisionPair[2]))
+		print("Action weight of \033[32m{}\033[0m], better to NOT attack!".format(decisionPair[2]))
 	else:
-		print("Action has a weight of {}".format(decisionPair[2]))
+		print("Action weight of \033[32m{}\033[0m]".format(decisionPair[2]))
 
 	print("\n--------------------------------------------	CHAD	--------------------------------------------\n\n\n")
 
@@ -96,7 +98,7 @@ def GetDecisionWeight(ally, enemy):
 	else:
 		weight -= ally.atk - enemy.health
 
-	weight -= enemy.atk - ally.health
+	weight += ally.health - enemy.atk
 
 	#if enemy.atk >= ally.health:
 	#	weight += -(enemy.atk + ally.health)

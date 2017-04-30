@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="99e3257e-6957-4715-a22d-00c88352dd38" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fireplace/pairSelector.py" afterPath="$PROJECT_DIR$/fireplace/pairSelector.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fireplace/utils.py" afterPath="$PROJECT_DIR$/fireplace/utils.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,8 +19,8 @@
       <file leaf-file-name="pairSelector.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fireplace/pairSelector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="56" column="12" lean-forward="false" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="12" />
+            <state relative-caret-position="518">
+              <caret line="74" column="60" lean-forward="true" selection-start-line="74" selection-start-column="60" selection-end-line="74" selection-end-column="60" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -61,14 +63,10 @@
       <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fireplace/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="608">
-              <caret line="283" column="45" lean-forward="true" selection-start-line="283" selection-start-column="45" selection-end-line="283" selection-end-column="45" />
+            <state relative-caret-position="218">
+              <caret line="278" column="18" lean-forward="true" selection-start-line="278" selection-start-column="18" selection-end-line="278" selection-end-column="18" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <marker date="1493574129272" expanded="true" signature="5195:7726" ph="..." />
-                <marker date="1493574129272" expanded="true" signature="7344:7684" ph="..." />
-                <marker date="1493574129272" expanded="true" signature="7374:7684" ph="..." />
-                <marker date="1493574129272" expanded="true" signature="7433:7597" ph="..." />
               </folding>
             </state>
           </provider>
@@ -332,22 +330,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fireplace/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="283" column="45" lean-forward="true" selection-start-line="283" selection-start-column="45" selection-end-line="283" selection-end-column="45" />
+        <state relative-caret-position="218">
+          <caret line="278" column="18" lean-forward="true" selection-start-line="278" selection-start-column="18" selection-end-line="278" selection-end-column="18" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <marker date="1493574129272" expanded="true" signature="5195:7726" ph="..." />
-            <marker date="1493574129272" expanded="true" signature="7344:7684" ph="..." />
-            <marker date="1493574129272" expanded="true" signature="7374:7684" ph="..." />
-            <marker date="1493574129272" expanded="true" signature="7433:7597" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fireplace/pairSelector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="56" column="12" lean-forward="false" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="12" />
+        <state relative-caret-position="518">
+          <caret line="74" column="60" lean-forward="true" selection-start-line="74" selection-start-column="60" selection-end-line="74" selection-end-column="60" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
