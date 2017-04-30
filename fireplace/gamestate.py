@@ -2,8 +2,12 @@ class GameState:
 
     def __init__(self, game):
         self.game = game
-        self.ally = game.player1
-        self.enemy = game.player2
+        if game.player1.name is "Player":
+            self.ally = game.player1
+            self.enemy = game.player2
+        else:
+            self.ally = game.player2
+            self.enemy = game.player1
         self.enemy_targets = []
         self.ally_characters = []
         self.enemy_hero_health = 30
