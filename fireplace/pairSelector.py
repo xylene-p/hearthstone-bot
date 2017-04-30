@@ -56,11 +56,11 @@ def GetOptimalDecisionPair(game: ".game.Game") -> ".game.Game":
 		#if pair != None:
 			print("\033[1m[SOLUTION]\033[21m [WEIGHT: \033[32m{}\033[0m]\t{} with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m ATTACKS {} with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m.".format(pair[2], pair[0], pair[0].atk, pair[0].health, pair[1], pair[1].atk, pair[1].health))
 
-	#	Return a tuple that contains the pair with the highest decision weight
 	if len(pairs) <= 0:
 		tempTup = (game.player1.characters[0], game.player1.characters[0].targets[0], 0)
 		return tempTup
 
+	#	Return a tuple that contains the pair with the highest decision weight
 	decisionPair = pairs[0]
 	for pair in pairs:
 		if pair[2] >= decisionPair[2]:
