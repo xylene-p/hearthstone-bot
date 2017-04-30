@@ -248,6 +248,8 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 		for character in player.characters:
 			compStr = str(character)
 			if 'Jaina' in compStr:
+				pair = pairSelector.GetOptimalDecisionPair(game)
+				print("PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
 				#Player 1 actions
 				for target in character.targets:
 					target_attr = dir(target)
