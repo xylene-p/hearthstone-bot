@@ -16,6 +16,7 @@ class GameState:
         self.ally_total_health = 0
         self.enemy_total_attack = 0
         self.enemy_total_health = 0
+        self.total_number_of_turns = 0
 
     def update(self, game):
         self.game = game
@@ -24,16 +25,18 @@ class GameState:
         self.enemy_hero_health = self.enemy.hero.health
         self.ally_hero_health = self.ally.hero.health
         self.update_total_attack_health()
-        print("");
-        print("TARGETS: {}".format(self.enemy_targets))
-        print("ALLIES: {}".format(self.ally_characters))
-        print("ENEMY HERO HEALTH: {}".format(self.enemy_hero_health))
-        print("HERO HEALTH: {}".format(self.ally_hero_health))
-        print("TOTAL ALLY ATTACK: {}".format(self.ally_total_attack))
-        print("TOTAL ALLY HEALTH: {}".format(self.ally_total_health))
-        print("TOTAL ENEMY ATTACK: {}".format(self.enemy_total_attack))
-        print("TOTAL ENEMY HEALTH: {}".format(self.enemy_total_health))
-        print("");
+        self.total_number_of_turns = game.turn
+        # print("");
+        # print("TARGETS: {}".format(self.enemy_targets))
+        # print("ALLIES: {}".format(self.ally_characters))
+        # print("ENEMY HERO HEALTH: {}".format(self.enemy_hero_health))
+        # print("HERO HEALTH: {}".format(self.ally_hero_health))
+        # print("TOTAL ALLY ATTACK: {}".format(self.ally_total_attack))
+        # print("TOTAL ALLY HEALTH: {}".format(self.ally_total_health))
+        # print("TOTAL ENEMY ATTACK: {}".format(self.enemy_total_attack))
+        # print("TOTAL ENEMY HEALTH: {}".format(self.enemy_total_health))
+        # print("TOTAL NUMBER OF TURNS {}".format(self.total_number_of_turns))
+        # print("");
 
     def update_total_attack_health(self):
         # Update ally total attack and health

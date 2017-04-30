@@ -74,10 +74,10 @@ class CardList(list):
 
 def mage_deck():
 	# arcane missles
-	# frostbolt
+	# frostbolt				CS2_024
 	# arcane intellect
-	# fireball
-	# polymorph
+	# fireball 				CS2_029
+	# polymorph 			CS2_022
 	# water elemental
 	# flamestrike
 	# acidic swamp ooze
@@ -88,10 +88,26 @@ def mage_deck():
 	# sen'jin sheildmasta
 	# gurabashi berserker
 	# boulderfist ogre
+	# frost nova
+	# ice barrier
+	# mana wyrm
 
 	from . import cards
 	deck = []
-	card_list = ['EX1_277', 'CS2_024', 'CS2_023', 'CS2_029', 'CS2_022', 'CS2_033', 'CS2_032', 'EX1_066', 'EX1_015', 'EX1_019', 'CS2_182', 'CS2_147', 'CS2_179', 'EX1_399', 'CS2_200']
+	card_list = ['CS2_026',  # frost nova
+				 'EX1_289',  # ice barrier
+				 'NEW1_012', # mana wyrm
+				 'CS2_023',
+				 'CS2_033',
+				 'CS2_032',
+				 'EX1_066',
+				 'EX1_015',
+				 'EX1_019',
+				 'CS2_182',
+				 'CS2_147',
+				 'CS2_179',
+				 'EX1_399',
+				 'CS2_200']
 	for card in card_list:
 		for i in range(2):
 			deck.append(cards.db[card].id)
@@ -221,7 +237,7 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 		# Perform lethal
 		if player.name is 'Player':
 			if (game_state.ally_total_attack >= game_state.enemy_hero_health):
-				print("\n=====LETHAL ATTACK NAOOOOOOO=====\n")
+				# print("\n=====LETHAL ATTACK NAOOOOOOO=====\n")
 				for character in player.characters:
 					if character.can_attack():
 						character.attack(character.targets[0])
@@ -234,7 +250,59 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 				heropower.use()
 			continue
 
-		# iterate over our hand and play whatever is playable
+		# =========== PLAYER ATTACK PHASE ===========
+		# if player.name is 'Player':
+		ally_hero = player.characters[0]
+		if (player.characters):
+			# Get optimal attacking pair
+			pair = pairSelector.GetOptimalDecisionPair(game)
+			# print("-----> PAIR CHECK: PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
+			attacking_minion = pair[0]
+			attacking_minion_target = pair[1]
+
+			# Calculate neural network output
+			training_list = []
+			for item in pair[0:2]:
+				training_list.append(float(item.atk)/10)
+				training_list.append(float(item.health)/10)
+			# print(nn.training_set_inputs)
+			nn.training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
+			hidden_state, newOutput = nn.think(array([pair[0].atk, pair[0].health, pair[1].atk, pair[1].health]))
+			# print("Neural network output: {}".format(newOutput))
+			game_state.update(game)
+
+			# Attack Actions
+			if (newOutput < 0.45):
+				for character in player.characters:
+					if character is attacking_minion:
+						for target in character.targets:
+							if target is attacking_minion_target:
+								if character.can_attack():
+									# print("\033[31mJAINA DOES STUFF HERE MAYBE\033[0m")
+									character.attack(target)
+			else:
+				for character in player.characters:
+					if character is attacking_minion:
+						if character.can_attack():
+							character.attack(character.targets[0])
+
+			for character in player.characters:
+				if character.can_attack():
+					character.attack(random.choice(character.targets))
+		else:
+			print("No more players can attack")
+
+
+
+		# =========== OPPONENT ATTACK PHASE ===========
+		# elif player.name is 'Opponent':
+		# 	opponent_hero = player.characters[0]
+		# 	for character in player.characters:
+		# 		if character.can_attack():
+		# 			character.attack(random.choice(character.targets))
+
+
+		# =========== CARD PLAYING PHASE ===========
 		for card in player.hand:
 			if card.is_playable() and random.random() < 0.5:
 				target = None
@@ -242,68 +310,19 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 					card = random.choice(card.choose_cards)
 				if card.requires_target():
 					target = random.choice(card.targets)
-				print("Playing %r on %r" % (card, target))
+				# print("Playing %r on %r" % (card, target))
 				card.play(target=target)
 
 				if player.choice:
 					choice = random.choice(player.choice.cards)
-					print("Choosing card %r" % (choice))
+					# print("Choosing card %r" % (choice))
 					player.choice.choose(choice)
 
 				continue
 
-		# =========== PLAYER ATTACK PHASE ===========
-		if player.name is 'Player':
-			ally_hero = player.characters[0]
-			if (player.characters):
-				# Get optimal attacking pair
-				pair = pairSelector.GetOptimalDecisionPair(game)
-				print("-----> PAIR CHECK: PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
-				attacking_minion = pair[0]
-				attacking_minion_target = pair[1]
-
-				# Calculate neural network output
-				training_list = []
-				for item in pair[0:2]:
-					training_list.append(float(item.atk)/10)
-					training_list.append(float(item.health)/10)
-				print(nn.training_set_inputs)
-				nn.training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
-				hidden_state, newOutput = nn.think(array([pair[0].atk, pair[0].health, pair[1].atk, pair[1].health]))
-				print("Neural network output: {}".format(newOutput))
-				game_state.update(game)
-
-				# Attack Actions
-				if (newOutput < 0.45):
-					for character in player.characters:
-						if character is attacking_minion:
-							for target in character.targets:
-								if target is attacking_minion_target:
-									if character.can_attack():
-										print("\033[31mJAINA DOES STUFF HERE MAYBE\033[0m")
-										character.attack(target)
-				else:
-					for character in player.characters:
-						if character is attacking_minion:
-							if character.can_attack():
-								character.attack(character.targets[0])
-			else:
-				print("No more players can attack")
-
-
-		# =========== OPPONENT ATTACK PHASE ===========
-		elif player.name is 'Opponent':
-			opponent_hero = player.characters[0]
-			for character in player.characters:
-				for target in character.targets:
-					print("Target: {}\tTarget Health: {}\t Target Attack: {}".format(target, target.health, target.atk))
-				if character.can_attack():
-					character.attack(random.choice(character.targets))
-
 		break
 
 	game.end_turn()
-	return game
 
 
 def play_full_game() -> ".game.Game":
@@ -314,7 +333,7 @@ def play_full_game() -> ".game.Game":
 	nn = NeuralNetwork(layer1, layer2)
 
 	for player in game.players:
-		print("Can mulligan %r" % (player.choice.cards))
+		# print("Can mulligan %r" % (player.choice.cards))
 		mull_count = random.randint(0, len(player.choice.cards))
 		cards_to_mulligan = random.sample(player.choice.cards, mull_count)
 		player.choice.choose(*cards_to_mulligan)

@@ -6,7 +6,8 @@ def get_logger(name, level=logging.DEBUG):
 	logger.setLevel(level)
 
 	if not logger.handlers:
-		ch = logging.StreamHandler()
+		# ch = logging.StreamHandler()
+		ch = logging.FileHandler('game_log.log')
 		ch.setLevel(level)
 
 		formatter = logging.Formatter(

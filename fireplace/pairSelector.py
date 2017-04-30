@@ -19,12 +19,12 @@ def GetOptimalDecisionPair(game: ".game.Game") -> ".game.Game":
 	allys.pop(0)
 
 	#	if list is empty return none
-	'''if len(allys) <= 0:
-		tempTup = (game.player1.characters[0], game.player1.characters[0].targets[0], 0)
-		return tempTup
-		#return None
-'''
-	print("\n\n\n --------------------------------------------	CHAD	--------------------------------------------\n")
+	# if len(allys) <= 0:
+	# 	tempTup = (game.player1.characters[0], game.player1.characters[0].targets[0], 0)
+	# 	return tempTup
+	# 	#return None
+
+	# print("\n\n\n --------------------------------------------	CHAD	--------------------------------------------\n")
 
 	#	list that holds the pairs for ally-to-enemy decision making
 	pairs = []
@@ -55,8 +55,8 @@ def GetOptimalDecisionPair(game: ".game.Game") -> ".game.Game":
 	#	Sorts the list by weight
 	pairs.sort(key=lambda tup: tup[2])
 
-	for pair in pairs:
-		print("\033[1m[OPTION]\033[21m [WEIGHT: \033[32m{}\033[0m]\t\033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m ATTACKS \033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m.".format(pair[2], pair[0], pair[0].atk, pair[0].health, pair[1], pair[1].atk, pair[1].health))
+	# for pair in pairs:
+	# 	print("\033[1m[OPTION]\033[21m [WEIGHT: \033[32m{}\033[0m]\t\033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m ATTACKS \033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m.".format(pair[2], pair[0], pair[0].atk, pair[0].health, pair[1], pair[1].atk, pair[1].health))
 
 	if len(pairs) <= 0:
 		tempTup = (game.player1.characters[0], game.player1.characters[0].targets[0], 0)
@@ -68,13 +68,13 @@ def GetOptimalDecisionPair(game: ".game.Game") -> ".game.Game":
 		if pair[2] >= decisionPair[2]:
 			decisionPair = pair
 
-	print("[OPTIMAL SOLUTION]\t\033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m to attack \033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m.".format(decisionPair[0], decisionPair[0].atk, decisionPair[0].health, decisionPair[1], decisionPair[1].atk, decisionPair[1].health))
-	if decisionPair[2] <= 0:
-		print("Action weight of \033[32m{}\033[0m], better to NOT attack!".format(decisionPair[2]))
-	else:
-		print("Action weight of \033[32m{}\033[0m]".format(decisionPair[2]))
-
-	print("\n--------------------------------------------	CHAD	--------------------------------------------\n\n\n")
+	# print("[OPTIMAL SOLUTION]\t\033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m to attack \033[1m{}\033[21m with \033[33m{} ATK\033[0m and \033[31m{} HP\033[0m.".format(decisionPair[0], decisionPair[0].atk, decisionPair[0].health, decisionPair[1], decisionPair[1].atk, decisionPair[1].health))
+	# if decisionPair[2] <= 0:
+	# 	print("Action weight of \033[32m{}\033[0m], better to NOT attack!".format(decisionPair[2]))
+	# else:
+	# 	print("Action weight of \033[32m{}\033[0m]".format(decisionPair[2]))
+	#
+	# print("\n--------------------------------------------	CHAD	--------------------------------------------\n\n\n")
 
 	return decisionPair
 
