@@ -263,7 +263,7 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 					training_list = []
 					for item in pair[0:2]:
 						training_list.append(float(item.atk))
-						training_list.append(float(item.health))
+					training_list.append(float(item.health))
 					print(training_list)
 					double_hero_check = training_list.count(0)
 					print(double_hero_check)
