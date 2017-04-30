@@ -236,11 +236,10 @@ def setup_game() -> ".game.Game":
 	return game
 
 
-def play_turn(game: ".game.Game", game_state) -> ".game.Game":
+def play_turn(game: ".game.Game") -> ".game.Game":
 	player = game.current_player
 
 	while True:
-		game_state.update()
 		heropower = player.hero.power
 		if heropower.is_usable() and random.random() < 0.1:
 			if heropower.requires_target():
@@ -280,6 +279,7 @@ def play_turn(game: ".game.Game", game_state) -> ".game.Game":
 
 def play_full_game() -> ".game.Game":
 	game = setup_game()
+	game_state = GameState(game)
 
 	for player in game.players:
 		print("Can mulligan %r" % (player.choice.cards))
@@ -288,6 +288,7 @@ def play_full_game() -> ".game.Game":
 		player.choice.choose(*cards_to_mulligan)
 
 	while True:
+		game_state.update(game)
 		play_turn(game)
 		pairSelector.PrintPlayerCharacters(game)
 
