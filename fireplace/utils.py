@@ -5,6 +5,7 @@ from bisect import bisect
 
 from numpy import exp, array, dot
 from NeuralNetwork import NeuralNetwork
+from NeuronLayer import NeuronLayer
 
 from . import pairSelector
 
@@ -284,10 +285,7 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 				attacking_minion_target = pair[1]
 
 			elif 'Garrosh' in compStr:
-				#Player 2 actions
 				for target in character.targets:
-					target_attr = dir(target)
-					# print (target_attr)
 					print("Target: {}\tTarget Health: {}\t Target Attack: {}".format(target, target.health, target.atk))
 				if character.can_attack():
 					character.attack(random.choice(character.targets))
@@ -303,8 +301,9 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 def play_full_game() -> ".game.Game":
 	game = setup_game()
 	game_state = GameState(game)
-
-	nn = NeuralNetwork()
+	layer1 = NeuronLayer(4, 4)
+	layer2 = NeuronLayer(1, 4)
+	nn = NeuralNetwork(layer1, layer2)
 
 	for player in game.players:
 		print("Can mulligan %r" % (player.choice.cards))
