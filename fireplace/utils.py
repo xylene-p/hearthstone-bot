@@ -5,6 +5,7 @@ from bisect import bisect
 
 from numpy import exp, array, dot
 from NeuralNetwork import NeuralNetwork
+from NeuronLayer import NeuronLayer
 
 from . import pairSelector
 
@@ -243,39 +244,37 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 
 				continue
 
-		# Randomly attack with whatever can attack
-
 		for character in player.characters:
 			compStr = str(character)
 			if 'Jaina' in compStr:
 				pair = pairSelector.GetOptimalDecisionPair(game)
-				print("PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
-				training_list = []
-				for item in pair[0:2]:
-					training_list.append(item.atk/10)
-					training_list.append(item.health/10)
-
+				if pair is None:
+					training_list = [0, 0, 0, 0]
+				else:
+					print("PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
+					training_list = []
+					for item in pair[0:2]:
+						training_list.append(float(item.atk))
+						training_list.append(float(item.health))
+					# print(training_list)
+					double_hero_check = training_list.count(0)
+					print(double_hero_check)
+					# print(nn.training_set_inputs)
+					if double_hero_check < 2:
+						training_list = np.array(training_list)/10
+				training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
+				# print(nn.training_set_inputs)
 				newOutput = nn.think(array([pair[0].atk, pair[0].health, pair[1].atk, pair[1].health]))
+				# nn.learnFromPrevGame(training_list, newOutput)
+				print("Neural network output: {}".format(newOutput))
 
-				nn.learnFromPrevGame(training_list, newOutput)
-				print(newOutput)
-				# nn.learnFromPrevGame(pair[0].atk, pair[0].health, pair[1].atk, pair[1].health, newOutput)
+				#Player 1 actions
 				game_state.update(game)
-				if character.can_attack():
-					character.attack(pair[1])
-					print (character.targets)
-					# print("\n\n\n\n\n\n")
-					if character.can_attack():
-						if newOutput < 0.5:
-							print(newOutput)
-							print("\n\n\n\n\n")
-					# newInput = character.targets
-					# newOutput = nn.think(ally.atk, ally.health, target.atk, target.health)
+				attacking_minion = pair[0]
+				attacking_minion_target = pair[1]
+
 			elif 'Garrosh' in compStr:
-				#Player 2 actions
 				for target in character.targets:
-					target_attr = dir(target)
-					# print (target_attr)
 					print("Target: {}\tTarget Health: {}\t Target Attack: {}".format(target, target.health, target.atk))
 				if character.can_attack():
 					character.attack(random.choice(character.targets))
@@ -289,8 +288,9 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 def play_full_game() -> ".game.Game":
 	game = setup_game()
 	game_state = GameState(game)
-
-	nn = NeuralNetwork()
+	layer1 = NeuronLayer(4, 4)
+	layer2 = NeuronLayer(1, 4)
+	nn = NeuralNetwork(layer1, layer2)
 
 	for player in game.players:
 		print("Can mulligan %r" % (player.choice.cards))
