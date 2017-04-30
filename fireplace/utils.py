@@ -256,24 +256,26 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 			compStr = str(character)
 			if 'Jaina' in compStr:
 				pair = pairSelector.GetOptimalDecisionPair(game)
-				if pair is None:
+				print("PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
+				if pair[0] is 0:
 					training_list = [0, 0, 0, 0]
 				else:
-					print("PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
 					training_list = []
 					for item in pair[0:2]:
 						training_list.append(float(item.atk))
-					training_list.append(float(item.health))
+						training_list.append(float(item.health))
 					print(training_list)
 					double_hero_check = training_list.count(0)
 					print(double_hero_check)
 					print(nn.training_set_inputs)
-					if double_hero_check < 2:
+					if double_hero_check != 2:
 						training_list = np.array(training_list)/10
+					else:
+						training_list = [0, 0, 0, 0]
 				training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
 				print(nn.training_set_inputs)
 				newOutput = nn.think(array([pair[0].atk, pair[0].health, pair[1].atk, pair[1].health]))
-				nn.learnFromPrevGame(training_list, newOutput)
+				nn.learnFromPrevGame(training_set_inputs, newOutput)
 				print("Neural network ouptut: {}".format(newOutput))
 
 				#Player 1 actions
