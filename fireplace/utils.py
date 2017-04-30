@@ -7,7 +7,8 @@ from pkgutil import iter_modules
 from typing import List
 from xml.etree import ElementTree
 from hearthstone.enums import CardClass, CardType
-from select import select
+
+from .gamestate import GameState
 
 
 # Autogenerate the list of cardset modules
@@ -94,6 +95,60 @@ def random_draft(card_class: CardClass, exclude=[]):
 	return deck
 
 
+def mage_deck():
+	# arcane missles
+	# frostbolt
+	# arcane intellect
+	# fireball
+	# polymorph
+	# water elemental
+	# flamestrike
+	# acidic swamp ooze
+	# novice engineer
+	# shattered sun cleric
+	# chillwind yeti
+	# gnomish inventor
+	# sen'jin sheildmasta
+	# gurabashi berserker
+	# boulderfist ogre
+
+	from . import cards
+	deck = []
+	card_list = ['EX1_277', 'CS2_024', 'CS2_023', 'CS2_029', 'CS2_022', 'CS2_033', 'CS2_032', 'EX1_066', 'EX1_015', 'EX1_019', 'CS2_182', 'CS2_147', 'CS2_179', 'EX1_399', 'CS2_200']
+	for card in card_list:
+		for i in range(2):
+			deck.append(cards.db[card].id)
+
+	return deck
+
+
+def warrior_deck():
+	# cleave
+	# execute
+	# fiery war axe
+	# heroic strike
+	# shieldblock
+	# warsong commander
+	# kor'kron elite
+	# arcanite reaper
+	# acid swamp ooze
+	# bloodfin raptor
+	# novice engineer
+	# shattered
+	# chillwind
+	# gnomish
+	# boulderfist
+
+	from . import cards
+	deck = []
+	card_list = ['CS2_114', 'CS2_108', 'CS2_106', 'CS2_105', 'EX1_606', 'EX1_084', 'NEW1_011', 'CS2_112', 'EX1_066', 'CS2_172', 'EX1_015', 'EX1_019', 'CS2_182', 'CS2_147', 'CS2_200']
+	for card in card_list:
+		for i in range(2):
+			deck.append(cards.db[card].id)
+
+	return deck
+
+
 def random_class():
 	return CardClass(random.randint(2, 10))
 
@@ -170,8 +225,8 @@ def setup_game() -> ".game.Game":
 	from .game import Game
 	from .player import Player
 
-	deck1 = random_draft(CardClass.MAGE)
-	deck2 = random_draft(CardClass.WARRIOR)
+	deck1 = mage_deck()
+	deck2 = warrior_deck()
 	player1 = Player("Player1", deck1, CardClass.MAGE.default_hero)
 	player2 = Player("Player2", deck2, CardClass.WARRIOR.default_hero)
 
@@ -181,12 +236,11 @@ def setup_game() -> ".game.Game":
 	return game
 
 
-def play_turn(game: ".game.Game") -> ".game.Game":
+def play_turn(game: ".game.Game", game_state) -> ".game.Game":
 	player = game.current_player
 
-	#print(dir(player))
-
 	while True:
+		game_state.update()
 		heropower = player.hero.power
 		if heropower.is_usable() and random.random() < 0.1:
 			if heropower.requires_target():
@@ -215,10 +269,6 @@ def play_turn(game: ".game.Game") -> ".game.Game":
 
 		# Randomly attack with whatever can attack
 		for character in player.characters:
-			for target in character.targets:
-				target_attr = dir(target)
-				# print(target_attr)
-				print("Target: {}\tTarget Health: {}\t Target Attack: {}".format(target, target.health, target.atk))
 			if character.can_attack():
 				character.attack(random.choice(character.targets))
 
