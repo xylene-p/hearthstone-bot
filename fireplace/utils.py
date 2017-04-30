@@ -251,18 +251,24 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 				pair = pairSelector.GetOptimalDecisionPair(game)
 				print("PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
 				training_list = []
-				training_set_inputs = nn.training_set_inputs
 				for item in pair[0:2]:
-					training_list.append(int(item.atk))
-					training_list.append(int(item.health))
-				training_list = np.array(training_list)/10
-				training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
-				nn.set_training_set_inputs(training_set_inputs)
-				#Player 1 actions
+					training_list.append(item.atk/10)
+					training_list.append(item.health/10)
+
+				newOutput = nn.think(array([pair[0].atk, pair[0].health, pair[1].atk, pair[1].health]))
+
+				nn.learnFromPrevGame(training_list, newOutput)
+				print(newOutput)
+				# nn.learnFromPrevGame(pair[0].atk, pair[0].health, pair[1].atk, pair[1].health, newOutput)
 				game_state.update(game)
 				if character.can_attack():
-					character.attack(random.choice(character.targets))
+					character.attack(pair[1])
 					print (character.targets)
+					# print("\n\n\n\n\n\n")
+					if character.can_attack():
+						if newOutput < 0.5:
+							print(newOutput)
+							print("\n\n\n\n\n")
 					# newInput = character.targets
 					# newOutput = nn.think(ally.atk, ally.health, target.atk, target.health)
 			elif 'Garrosh' in compStr:
@@ -279,7 +285,7 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 		break
 
 	game.end_turn()
-	return game, nn
+	return game
 
 
 def play_full_game() -> ".game.Game":

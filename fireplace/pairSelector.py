@@ -62,10 +62,10 @@ def GetDecisionWeight(ally, enemy):
 	#print("ally {} has {} ATK and {} HP".format(ally, ally.atk, ally.health))
 	#print("enemy {} has {} ATK and {} HP".format(enemy, enemy.atk, enemy.health))
 
-	if int(enemy.atk) <= 0 and int(ally.atk) > 0:
+	if enemy.atk <= 0 and ally.atk > 0:
 		weight += 9000
 
-	elif int(enemy.atk) >= 0 and int(ally.atk) <= 0:
+	elif enemy.atk >= 0 and ally.atk <= 0:
 		weight += -9000
 
 	if ally.atk >= enemy.health:
