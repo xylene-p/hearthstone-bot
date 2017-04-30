@@ -1,14 +1,20 @@
 import random
 import os.path
-from . import pairSelector
+import re
 from bisect import bisect
+
+from numpy import exp, array, dot
+from NeuralNetwork import NeuralNetwork
+
+from . import pairSelector
+
+from .gamestate import GameState
+
 from importlib import import_module
 from pkgutil import iter_modules
 from typing import List
 from xml.etree import ElementTree
 from hearthstone.enums import CardClass, CardType
-
-from .gamestate import GameState
 
 
 # Autogenerate the list of cardset modules
@@ -63,38 +69,6 @@ class CardList(list):
 		return self.__class__(e for k, v in kwargs.items() for e in self if getattr(e, k, 0) == v)
 
 
-def random_draft(card_class: CardClass, exclude=[]):
-	"""
-	Return a deck of 30 random cards for the \a card_class
-	"""
-	from . import cards
-	from .deck import Deck
-
-	deck = []
-	collection = []
-	hero = card_class.default_hero
-
-	for card in cards.db.keys():
-		if card in exclude:
-			continue
-		cls = cards.db[card]
-		if not cls.collectible:
-			continue
-		if cls.type == CardType.HERO:
-			# Heroes are collectible...
-			continue
-		if cls.card_class and cls.card_class != card_class:
-			continue
-		collection.append(cls)
-
-	while len(deck) < Deck.MAX_CARDS:
-		card = random.choice(collection)
-		if deck.count(card.id) < card.max_count_in_deck:
-			deck.append(card.id)
-
-	return deck
-
-
 def mage_deck():
 	# arcane missles
 	# frostbolt
@@ -147,6 +121,7 @@ def warrior_deck():
 			deck.append(cards.db[card].id)
 
 	return deck
+
 
 
 def random_class():
@@ -227,8 +202,8 @@ def setup_game() -> ".game.Game":
 
 	deck1 = mage_deck()
 	deck2 = warrior_deck()
-	player1 = Player("Player1", deck1, CardClass.MAGE.default_hero)
-	player2 = Player("Player2", deck2, CardClass.WARRIOR.default_hero)
+	player1 = Player("Player", deck1, CardClass.MAGE.default_hero)
+	player2 = Player("Opponent", deck2, CardClass.WARRIOR.default_hero)
 
 	game = Game(players=(player1, player2))
 	game.start()
@@ -236,11 +211,14 @@ def setup_game() -> ".game.Game":
 	return game
 
 
-def play_turn(game: ".game.Game", game_state) -> ".game.Game":
+def play_turn(game: ".game.Game") -> ".game.Game":
 	player = game.current_player
 
+	nn = NeuralNetwork()
+
+	# ally =
+
 	while True:
-		game_state.update()
 		heropower = player.hero.power
 		if heropower.is_usable() and random.random() < 0.1:
 			if heropower.requires_target():
@@ -268,9 +246,32 @@ def play_turn(game: ".game.Game", game_state) -> ".game.Game":
 				continue
 
 		# Randomly attack with whatever can attack
+
 		for character in player.characters:
-			if character.can_attack():
-				character.attack(random.choice(character.targets))
+			compStr = str(character)
+			if 'Jaina' in compStr:
+				#Player 1 actions
+				print(compStr)
+				print("\n\n\n\n")
+				for target in character.targets:
+					target_attr = dir(target)
+					# print (target_attr)
+					print("Target: {}\tTarget Health: {}\t Target Attack: {}".format(target, target.health, target.atk))
+				if character.can_attack():
+					character.attack(random.choice(character.targets))
+					print (character.targets)
+					# newInput = character.targets
+					# newOutput = nn.think(ally.atk, ally.health, target.atk, target.health)
+			elif 'Garrosh' in compStr:
+				#Player 2 actions
+				print(compStr)
+				print("\n\n\n\n")
+				for target in character.targets:
+					target_attr = dir(target)
+					# print (target_attr)
+					print("Target: {}\tTarget Health: {}\t Target Attack: {}".format(target, target.health, target.atk))
+				if character.can_attack():
+					character.attack(random.choice(character.targets))
 
 		break
 
@@ -281,6 +282,7 @@ def play_turn(game: ".game.Game", game_state) -> ".game.Game":
 def play_full_game() -> ".game.Game":
 	game = setup_game()
 
+	nn = NeuralNetwork()
 	for player in game.players:
 		print("Can mulligan %r" % (player.choice.cards))
 		mull_count = random.randint(0, len(player.choice.cards))
@@ -289,6 +291,5 @@ def play_full_game() -> ".game.Game":
 
 	while True:
 		play_turn(game)
-		pairSelector.PrintPlayerCharacters(game)
 
 	return game
