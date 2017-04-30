@@ -254,9 +254,12 @@ def play_turn(game: ".game.Game", game_state) -> ".game.Game":
 				print("PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
 				training_list = []
 				for item in pair[0:2]:
-					training_list.append(item.atk)
-					training_list.append(item.health)
-				np.append(nn.training_set_inputs, training_list)
+					training_list.append(int(item.atk))
+					training_list.append(int(item.health))
+				training_list = np.array(training_list)/10
+				print(nn.training_set_inputs)
+				nn.training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
+				print(nn.training_set_inputs)
 				#Player 1 actions
 				game_state.update(game)
 				if character.can_attack():
