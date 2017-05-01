@@ -42,6 +42,9 @@ class BaseEntity(object):
 	def log(self, message, *args):
 		self.logger.info(message, *args)
 
+	def log_crit(self, message, *args):
+		self.logger.critical(message, *args)
+
 	def get_actions(self, name):
 		actions = getattr(self.data.scripts, name)
 		if callable(actions):

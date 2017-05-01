@@ -19,6 +19,8 @@ from hearthstone.enums import CardClass, CardType
 
 import numpy as np
 
+from . import logging
+
 
 # Autogenerate the list of cardset modules
 _cards_module = os.path.join(os.path.dirname(__file__), "cards")
@@ -251,55 +253,56 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 			continue
 
 		# =========== PLAYER ATTACK PHASE ===========
-		# if player.name is 'Player':
-		ally_hero = player.characters[0]
-		if (player.characters):
-			# Get optimal attacking pair
-			pair = pairSelector.GetOptimalDecisionPair(game)
-			# print("-----> PAIR CHECK: PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
-			attacking_minion = pair[0]
-			attacking_minion_target = pair[1]
+		if player.name is 'Player':
+			ally_hero = player.characters[0]
+			if (player.characters):
+				# Get optimal attacking pair
+				pair = pairSelector.GetOptimalDecisionPair(game)
+				# print("-----> PAIR CHECK: PAIR FROM PAIR SELECTOR IN PLAY TURN: {}".format(pair))
+				attacking_minion = pair[0]
+				attacking_minion_target = pair[1]
 
-			# Calculate neural network output
-			training_list = []
-			for item in pair[0:2]:
-				training_list.append(float(item.atk)/10)
-				training_list.append(float(item.health)/10)
-			# print(nn.training_set_inputs)
-			nn.training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
-			hidden_state, newOutput = nn.think(array([pair[0].atk, pair[0].health, pair[1].atk, pair[1].health]))
-			# print("Neural network output: {}".format(newOutput))
-			game_state.update(game)
+				# Calculate neural network output
+				training_list = []
+				for item in pair[0:2]:
+					training_list.append(float(item.atk)/10)
+					training_list.append(float(item.health)/10)
+				# print(nn.training_set_inputs)
+				nn.training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
+				hidden_state, newOutput = nn.think(array([pair[0].atk, pair[0].health, pair[1].atk, pair[1].health]))
+				# nn.learnFromPrevGame(nn.training_set_inputs, newOutput);
+				# print("Neural network output: {}".format(newOutput))
+				game_state.update(game)
 
-			# Attack Actions
-			if (newOutput < 0.45):
+				# Attack Actions
+				if (newOutput < 0.45):
+					for character in player.characters:
+						if character is attacking_minion:
+							for target in character.targets:
+								if target is attacking_minion_target:
+									if character.can_attack():
+										# print("\033[31mJAINA DOES STUFF HERE MAYBE\033[0m")
+										character.attack(target)
+				else:
+					for character in player.characters:
+						if character is attacking_minion:
+							if character.can_attack():
+								character.attack(character.targets[0])
+
 				for character in player.characters:
-					if character is attacking_minion:
-						for target in character.targets:
-							if target is attacking_minion_target:
-								if character.can_attack():
-									# print("\033[31mJAINA DOES STUFF HERE MAYBE\033[0m")
-									character.attack(target)
+					if character.can_attack():
+						character.attack(random.choice(character.targets))
 			else:
-				for character in player.characters:
-					if character is attacking_minion:
-						if character.can_attack():
-							character.attack(character.targets[0])
-
-			for character in player.characters:
-				if character.can_attack():
-					character.attack(random.choice(character.targets))
-		else:
-			print("No more players can attack")
+				print("No more players can attack")
 
 
 
 		# =========== OPPONENT ATTACK PHASE ===========
-		# elif player.name is 'Opponent':
-		# 	opponent_hero = player.characters[0]
-		# 	for character in player.characters:
-		# 		if character.can_attack():
-		# 			character.attack(random.choice(character.targets))
+		elif player.name is 'Opponent':
+			opponent_hero = player.characters[0]
+			for character in player.characters:
+				if character.can_attack():
+					character.attack(random.choice(character.targets))
 
 
 		# =========== CARD PLAYING PHASE ===========

@@ -7,7 +7,7 @@ def get_logger(name, level=logging.DEBUG):
 
 	if not logger.handlers:
 		# ch = logging.StreamHandler()
-		ch = logging.FileHandler('game_log.log')
+		ch = logging.FileHandler("logs.log", 'w')
 		ch.setLevel(level)
 
 		formatter = logging.Formatter(
@@ -20,5 +20,5 @@ def get_logger(name, level=logging.DEBUG):
 
 	return logger
 
-
-log = get_logger("fireplace")
+log = get_logger("fireplace", level=logging.CRITICAL)
+# log = get_logger("wins", level=logging.CRITICAL)

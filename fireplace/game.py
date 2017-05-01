@@ -183,6 +183,7 @@ class BaseGame(Entity):
 						player.playstate = PlayState.LOST
 					else:
 						player.playstate = PlayState.WON
+						self.log_crit("[Winner] {} {}".format(player.name, self.turn))
 			self.state = State.COMPLETE
 			self.manager.step(self.next_step, Step.FINAL_WRAPUP)
 			self.manager.step(self.next_step, Step.FINAL_GAMEOVER)
