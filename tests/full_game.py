@@ -22,7 +22,7 @@ def main():
 	neural_network.train(60000)
 
 	cards.db.initialize()
-	for x in range(10):
+	for x in range(50):
 		test_full_game(x)
 			# hidden_state, output = neural_network.think(array([0.5, 0.1, 0.1, 0.1]))
 			# print ("Considering new situation [0.5, 0.1, 0.1, 0.1] -> ?: ", output)

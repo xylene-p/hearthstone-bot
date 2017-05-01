@@ -270,7 +270,7 @@ def play_turn(game: ".game.Game", game_state, nn) -> ".game.Game":
 				# print(nn.training_set_inputs)
 				nn.training_set_inputs = np.vstack((nn.training_set_inputs, training_list))
 				hidden_state, newOutput = nn.think(array([pair[0].atk, pair[0].health, pair[1].atk, pair[1].health]))
-				# nn.learnFromPrevGame(nn.training_set_inputs, newOutput);
+				nn.learnFromPrevGame(nn.training_set_inputs, newOutput);
 				# print("Neural network output: {}".format(newOutput))
 				game_state.update(game)
 
