@@ -10,7 +10,6 @@ from .managers import GameManager
 from .utils import CardList
 from .exceptions import GameOver
 
-
 class BaseGame(Entity):
 	type = CardType.GAME
 	MAX_MINIONS_ON_FIELD = 7
@@ -181,6 +180,11 @@ class BaseGame(Entity):
 				for player in self.players:
 					if player.playstate == PlayState.LOSING:
 						player.playstate = PlayState.LOST
+						strrrr = str(self.players)
+						if('Garrosh' in strrrr):
+							print("SOMEONE LOST BITCHs: Garrosh: ", self.players)
+						else:
+							print("SOMEONE LOST BITCHs: Jaina: ", self.players)
 					else:
 						player.playstate = PlayState.WON
 			self.state = State.COMPLETE

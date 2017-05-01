@@ -11,6 +11,8 @@ from . import pairSelector
 
 from .gamestate import GameState
 
+from .managers import GameManager
+
 from importlib import import_module
 from pkgutil import iter_modules
 from typing import List
@@ -338,8 +340,11 @@ def play_full_game() -> ".game.Game":
 		cards_to_mulligan = random.sample(player.choice.cards, mull_count)
 		player.choice.choose(*cards_to_mulligan)
 
+
 	while True:
 		game_state.update(game)
 		play_turn(game, game_state, nn)
+
+
 
 	return game

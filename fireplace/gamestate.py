@@ -38,6 +38,8 @@ class GameState:
         # print("TOTAL NUMBER OF TURNS {}".format(self.total_number_of_turns))
         # print("");
 
+
+
     def update_total_attack_health(self):
         # Update ally total attack and health
         total_attack = 0
